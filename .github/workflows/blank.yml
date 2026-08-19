@@ -32,6 +32,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: khayyam-apk
-          path: |
+          path: app/build/outputs/apk/**/*.apk
             **/*.apk
           if-no-files-found: error
