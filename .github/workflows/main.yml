@@ -1,0 +1,40 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: دریافت کد
+        uses: actions/checkout@v4
+
+      - name: نصب Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: ساخت APK
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: پیدا کردن APK
+        run: |
+          echo "APK files:"
+          find . -type f -name "*.apk"
+
+      - name: ذخیره APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: khayyam-apk
+          path: |
+            **/*.apk
+            !**/build/intermediates/**
+          if-no-files-found: error
